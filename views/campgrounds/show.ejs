@@ -1,12 +1,9 @@
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Show</title>
-	</head>
-	<body>
-		<h1><%=campground.title%></h1>
-		<h2><%=campground.location%></h2>
+<% layout('layouts/boilerplate.ejs')%>
+		<h1><%= campground.title %></h1>
+		<h2><%= campground.location %></h2>
+        <img src="<%= campground.image%>" alt="">
+        <p><%= campground.description %></p>
+        
 		<p>
 			<a href="/campgrounds/<%=campground._id%>/edit">Edit Campground Info</a>
 		</p>
@@ -17,5 +14,3 @@
 		<footer>
 			<a href="/campgrounds">All Campgrounds</a>
 		</footer>
-	</body>
-</html>
