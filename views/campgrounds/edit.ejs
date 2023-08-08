@@ -30,7 +30,7 @@
 					class="form-control"
 					type="text"
 					id="title"
-					name="title"
+					name="campground[title]"
 					value="<%= campground.title%>"
 				/>
 			</div>
@@ -39,7 +39,7 @@
 				<input
 					class="form-control"
 					type="text"
-					name="location"
+					name="campground[location]"
 					id="location"
 					value="<%= campground.location%>"
 				/>
@@ -49,7 +49,7 @@
 				<textarea
 					class="form-control"
 					type="text"
-					name="description"
+					name="campground[description]"
 					id="description"
 					value="<%= campground.description%>"
 				></textarea>
@@ -61,7 +61,7 @@
 					<input
 						type="text"
 						class="form-control"
-						name="price"
+						name="campground[price]"
 						placeholder="0"
 						aria-label="price"
 						aria-describedby="price-label"
@@ -74,7 +74,7 @@
 				<input
 					class="form-control"
 					type="text"
-					name="image"
+					name="campground[image]"
 					id="image"
 					value="<%= campground.image%>"
 				/>
@@ -83,6 +83,6 @@
 				<button class="btn btn-info">Update</button>
 			</div>
 		</form>
-		<a href="/campgrounds">All Campgrounds</a>
+		<a href="/campgrounds/<%= campground._id%>">Back to Campground Info</a>
 	</div>
 </div>
