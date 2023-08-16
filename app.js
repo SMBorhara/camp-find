@@ -6,9 +6,13 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const ExpressError = require('./utils/ExpressError');
+const passport = require('passport');
+const localStrategy = require('passport-local');
+const User = require('./models/user.js');
 
-const campgrounds = require('./routes/campgrounds.js');
-const reviews = require('./routes/reviews.js');
+const campgroundRoutes = require('./routes/campgrounds.js');
+const reviewRoutes = require('./routes/reviews.js');
+const userRoutes = require('./routes/user.js');
 
 const mongooseConnect = async () => {
 	try {
@@ -44,14 +48,31 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new localStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req, res, next) => {
 	res.locals.success = req.flash('success');
 	res.locals.error = req.flash('error');
 	next();
 });
 
-app.use('/campgrounds', campgrounds);
-app.use('/campgrounds/:id/reviews', reviews);
+app.get('/fakeuser', async (req, res) => {
+	const user = new User({
+		email: 'vanimal25@gmail.com',
+		username: 'smborhara',
+	});
+	const newUser = await User.register(user, 'catdog');
+	res.send(newUser);
+});
+
+app.use('/', userRoutes);
+app.use('/campgrounds', campgroundRoutes);
+app.use('/campgrounds/:id/reviews', reviewRoutes);
 
 app.get('/', (req, res) => {
 	res.send('Camp Seeker Home');
