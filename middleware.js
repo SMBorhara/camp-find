@@ -1,5 +1,7 @@
 const ExpressError = require('./utils/ExpressError.js');
 const { campgroundSchema, reviewSchema } = require('./schemas.js');
+const Campground = require('./models/campgrounds.js');
+const Review = require('./models/review.js');
 
 module.exports.isLoggedIn = (req, res, next) => {
 	if (!req.isAuthenticated()) {
