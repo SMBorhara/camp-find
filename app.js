@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== 'production') {
+	require('dotenv').config();
+}
+
 const express = require('express');
 const session = require('express-session');
 const flash = require('connect-flash');
@@ -56,7 +60,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
-	res.locals.currentUser = req.user
+	res.locals.currentUser = req.user;
 	res.locals.success = req.flash('success');
 	res.locals.error = req.flash('error');
 	next();
@@ -74,9 +78,6 @@ app.get('/fakeuser', async (req, res) => {
 app.use('/', userRoutes);
 app.use('/campgrounds', campgroundRoutes);
 app.use('/campgrounds/:id/reviews', reviewRoutes);
-
-
-
 
 app.all('*', (req, res, next) => {
 	next(new ExpressError('Page Not Found', 404));

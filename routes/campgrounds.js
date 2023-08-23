@@ -8,11 +8,19 @@ const {
 	isAuthor,
 	validateCampground,
 } = require('../middleware.js');
+const multer = require('multer');
+const { storage } = require('../cloudinary');
+const upload = multer({ storage });
 
 router
 	.route('/')
 	.get(CatchAsync(campgrounds.index))
-	.post(isLoggedIn, validateCampground, CatchAsync(campgrounds.submitNewCamp));
+	.post(
+		isLoggedIn,
+		upload.array('image'),
+		validateCampground,
+		CatchAsync(campgrounds.submitNewCamp)
+	);
 
 // campground form - new
 router.get('/new', isLoggedIn, campgrounds.addCampForm);
@@ -31,6 +39,7 @@ router
 	.put(
 		isLoggedIn,
 		isAuthor,
+		upload.array('image'),
 		validateCampground,
 		CatchAsync(campgrounds.updateCampInfo)
 	)

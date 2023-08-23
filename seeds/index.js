@@ -26,10 +26,23 @@ const seedDB = async () => {
 			author: '64dcf7e3ff6409b5823fa2b1',
 			location: `${cities[random1000].city}, ${cities[random1000].state}`,
 			title: `${sample(descriptors)} ${sample(places)}`,
-			image: 'https://source.unsplash.com/collection/483251',
 			description:
 				'Breathe in fresh air and find yourself grounded amongst the green of the tress and rustling of the streams. Be one with the earth and disconnect from the distractions of modern life.',
 			price,
+			images: [
+				{
+					url: 'https://res.cloudinary.com/dsxqp863w/image/upload/v1692751029/Camp%20Seeker/nvgcyt1ud39vkvzghfyb.jpg',
+					filename: 'Camp Seeker/nvgcyt1ud39vkvzghfyb',
+				},
+				{
+					url: 'https://res.cloudinary.com/dsxqp863w/image/upload/v1692751028/Camp%20Seeker/vxpjtenkpiftntwvsiot.jpg',
+					filename: 'Camp Seeker/vxpjtenkpiftntwvsiot',
+				},
+				{
+					url: 'https://res.cloudinary.com/dsxqp863w/image/upload/v1692751028/Camp%20Seeker/wmhcn0f3pudhwkbkvm2h.jpg',
+					filename: 'Camp Seeker/wmhcn0f3pudhwkbkvm2h',
+				},
+			],
 		});
 		await camp.save();
 	}
