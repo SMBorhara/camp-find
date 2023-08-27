@@ -6,6 +6,7 @@ const geocoder = mbxGeocoding({ accessToken: mbxToken });
 
 module.exports.index = async (req, res) => {
 	const campgrounds = await Campground.find({});
+	// console.log(campgrounds.images);
 	res.render('campgrounds/index', { campgrounds });
 };
 
@@ -22,13 +23,14 @@ module.exports.submitNewCamp = async (req, res, next) => {
 		.send();
 	const campground = new Campground(req.body.campground);
 	campground.geometry = geodata.body.features[0].geometry;
+	// console.log('COORDINATES', campground.geometry.coordinates);
 	campground.images = req.files.map((f) => ({
 		url: f.path,
 		filename: f.filename,
 	}));
 	campground.author = req.user._id;
 	await campground.save();
-	console.log(campground);
+	// console.log(campground);
 	req.flash('success', 'Campground Succesfully Added!');
 	res.redirect(`/campgrounds/${campground._id}`);
 };

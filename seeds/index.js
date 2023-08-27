@@ -19,16 +19,24 @@ const sample = (arr) => {
 
 const seedDB = async () => {
 	await Campground.deleteMany({});
-	for (let i = 0; i < 50; i++) {
+	for (let i = 0; i < 400; i++) {
 		const random1000 = Math.floor(Math.random() * 1000);
 		const price = Math.floor(Math.random() * 20) + 10;
 		const camp = new Campground({
+			// my author id
 			author: '64dcf7e3ff6409b5823fa2b1',
 			location: `${cities[random1000].city}, ${cities[random1000].state}`,
 			title: `${sample(descriptors)} ${sample(places)}`,
 			description:
 				'Breathe in fresh air and find yourself grounded amongst the green of the tress and rustling of the streams. Be one with the earth and disconnect from the distractions of modern life.',
 			price,
+			geometry: {
+				type: 'Point',
+				coordinates: [
+					cities[random1000].longitude,
+					cities[random1000].latitude,
+				],
+			},
 			images: [
 				{
 					url: 'https://res.cloudinary.com/dsxqp863w/image/upload/v1692751029/Camp%20Seeker/nvgcyt1ud39vkvzghfyb.jpg',
