@@ -3,12 +3,12 @@
 
 <div class="row">
 	<div class="col-6">
-		<div id="map" style="width: 400px; height: 300px"></div>
-		<div id="campgroundCarousel" class="carousel slide carousel-fade">
+		<div id="map"></div>
+		<div id="campgroundCarousel" class="carousel slide carousel-fade mt-3">
 			<div class="carousel-inner">
 				<% campground.images.forEach((img, i) => { %>
 				<div class="carousel-item <%= i === 0 ? 'active' : '' %>">
-					<img src="<%= img.url%>" class="d-block w-100" alt="" />
+					<img src="<%= img.url%>" class="d-block w-100 rounded" alt="" />
 				</div>
 				<% }) %>
 			</div>
@@ -161,6 +161,5 @@
 <script>
 	const mapToken = '<%-process.env.MAP_BOX_TOKEN%>';
 	const campground = <%- JSON.stringify(campground) %>
-	
 </script>
 <script src="/js/showPageMap.js"></script>
