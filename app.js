@@ -4,19 +4,22 @@ if (process.env.NODE_ENV !== 'production') {
 
 const express = require('express');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const flash = require('connect-flash');
 const path = require('path');
 const mongoose = require('mongoose');
+const mongoSanitize = require('express-mongo-sanitize');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const ExpressError = require('./utils/ExpressError');
 const passport = require('passport');
 const localStrategy = require('passport-local');
 const User = require('./models/user.js');
-
 const campgroundRoutes = require('./routes/campgrounds.js');
 const reviewRoutes = require('./routes/reviews.js');
 const userRoutes = require('./routes/user.js');
+const helmet = require('helmet');
+// const dbUrl = process.env.DB_URL;
 
 const mongooseConnect = async () => {
 	try {
@@ -36,10 +39,20 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
-
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(mongoSanitize());
+
+const store = MongoStore.create({
+	mongoUrl: 'mongodb://localhost:27017/camp-finder',
+	touchAfter: 24 * 60 * 60,
+	crypto: {
+		secret: 'needstobettersecret',
+	},
+});
 
 const sessionConfig = {
+	store,
+	name: 'session',
 	secret: 'needstobettersecret',
 	resave: false,
 	saveUninitialized: true,
@@ -51,6 +64,7 @@ const sessionConfig = {
 };
 app.use(session(sessionConfig));
 app.use(flash());
+app.use(helmet({ contentSecurityPolicy: false }));
 
 app.use(passport.initialize());
 app.use(passport.session());
