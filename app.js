@@ -19,11 +19,11 @@ const campgroundRoutes = require('./routes/campgrounds.js');
 const reviewRoutes = require('./routes/reviews.js');
 const userRoutes = require('./routes/user.js');
 const helmet = require('helmet');
-// const dbUrl = process.env.DB_URL;
 
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/camp-finder';
 const mongooseConnect = async () => {
 	try {
-		const db = await mongoose.connect('mongodb://localhost:27017/camp-finder');
+		const db = await mongoose.connect(dbUrl);
 		console.log('DATABASE CONNECETED');
 	} catch (error) {
 		console.log('ERROR >>>>>', error);
@@ -42,18 +42,20 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(mongoSanitize());
 
+const secret = process.env.SECRET || 'needstobettersecret';
+
 const store = MongoStore.create({
-	mongoUrl: 'mongodb://localhost:27017/camp-finder',
+	mongoUrl: dbUrl,
 	touchAfter: 24 * 60 * 60,
 	crypto: {
-		secret: 'needstobettersecret',
+		secret,
 	},
 });
 
 const sessionConfig = {
 	store,
 	name: 'session',
-	secret: 'needstobettersecret',
+	secret,
 	resave: false,
 	saveUninitialized: true,
 	cookie: {
@@ -98,6 +100,7 @@ app.use((err, req, res, next) => {
 	res.status(statusCode).render('error', { err });
 });
 
-app.listen(3000, () => {
-	console.log('LISTENING ON PORT 3000');
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+	console.log(`LISTENING ON PORT ${port}`);
 });
